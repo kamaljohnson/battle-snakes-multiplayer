@@ -119,11 +119,16 @@ public class UILobby : MonoBehaviour
 
     public void SearchGameSuccess(bool success, string matchID)
     {
+        searching = false;
+        searchCanvas.enabled = false;
         if (success)
         {
-            searchCanvas.enabled = false;
-            searching = false;
             JoinSuccess(success, matchID);
+        }
+        else
+        {
+            //Host a new public game
+            HostPublic();
         }
     }
 

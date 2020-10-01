@@ -105,7 +105,6 @@ public class Player : NetworkBehaviour
         }
         else
         {
-            //TODO: Create a match and join it
             Debug.Log($"<color=red>Game Joined failed</color>");
             TargetJoinGame(false, _matchID, playerIndex);
         }
