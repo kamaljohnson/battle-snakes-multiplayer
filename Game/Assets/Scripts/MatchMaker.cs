@@ -41,7 +41,7 @@ public class MatchMaker : NetworkBehaviour
     public SyncListMatch matches = new SyncListMatch();
     public SyncListString matchIDs = new SyncListString();
 
-    [SerializeField] GameObject turnManagerPrefab;
+    [SerializeField] GameObject gameManagerPrefab;
     [SerializeField] int maxMatchPlayers = 12;
 
     void Start()
@@ -134,9 +134,10 @@ public class MatchMaker : NetworkBehaviour
 
     public void BeginGame(string _matchID)
     {
-        GameObject newTurnManager = Instantiate(turnManagerPrefab);
-        NetworkServer.Spawn(newTurnManager);
-        newTurnManager.GetComponent<NetworkMatchChecker>().matchId = _matchID.ToGuid();
+        GameObject newGameManager = Instantiate(gameManagerPrefab);
+        NetworkServer.Spawn(newGameManager);
+        newGameManager.GetComponent<NetworkMatchChecker>().matchId = _matchID.ToGuid();
+        GameManager gameManager = newGameManager.GetComponent<GameManager>();
 
         // Instantiate a game login manager
 
@@ -148,6 +149,7 @@ public class MatchMaker : NetworkBehaviour
                 foreach (var player in matches[i].players)
                 {
                     Player _player = player.GetComponent<Player>();
+                    gameManager.AddPlayer(_player);
                     _player.StartGame();
                 }
                 break;

@@ -13,6 +13,7 @@ public class UILobby : MonoBehaviour
     [SerializeField] TMP_InputField joinMatchInput;
     [SerializeField] List<Selectable> lobbySelectables = new List<Selectable>();
     [SerializeField] Canvas lobbyCanvas;
+    [SerializeField] GameObject startGameButton;
     [SerializeField] Canvas searchCanvas;
     bool searching = false;
 
@@ -41,6 +42,8 @@ public class UILobby : MonoBehaviour
         lobbySelectables.ForEach(x => x.interactable = false);
 
         Player.localPlayer.HostGame(false);
+
+        startGameButton.SetActive(true);    //only the host of the private party can start the game
     }
 
     public void HostSuccess(bool success, string matchID)
@@ -104,6 +107,7 @@ public class UILobby : MonoBehaviour
 
     public void BeginGame()
     {
+        Debug.Log("BeginGame()");
         Player.localPlayer.BeginGame();
     }
 
