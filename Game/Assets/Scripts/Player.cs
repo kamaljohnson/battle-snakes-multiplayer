@@ -217,6 +217,7 @@ public class Player : NetworkBehaviour
     {
         Debug.Log($"MatchID: {matchID} | Beginning");
         //Additively load game scene
+        UILobby.instance.DisableLobbyUI();
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
     }
 

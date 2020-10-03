@@ -1708,7 +1708,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &562896909
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3670,6 +3670,7 @@ MonoBehaviour:
   UIPlayerPrefab: {fileID: 5741416530156706433, guid: fe05d09c0a28039498bbe98e9043392e, type: 3}
   matchIDText: {fileID: 188736758}
   beginGameButton: {fileID: 562896908}
+  lobbyUI: {fileID: 1584243733}
 --- !u!1 &1517095524
 GameObject:
   m_ObjectHideFlags: 0
