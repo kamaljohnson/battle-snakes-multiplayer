@@ -221,4 +221,8 @@ public class Player : NetworkBehaviour
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
     }
 
+
+    /*
+            IN GAME
+    */
 }

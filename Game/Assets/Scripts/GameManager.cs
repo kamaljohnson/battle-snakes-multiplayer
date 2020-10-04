@@ -17,12 +17,6 @@ public class GameManager : NetworkBehaviour
         instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void AddPlayer(Player _player)
     {
         Debug.Log($"Adding player");

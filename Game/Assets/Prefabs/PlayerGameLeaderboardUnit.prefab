@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5737026902170205248}
   - component: {fileID: 5845079273649912801}
   - component: {fileID: 3013376135192845144}
-  - component: {fileID: -4271379325280031751}
+  - component: {fileID: 3549858036557619738}
   m_Layer: 0
   m_Name: PlayerGameLeaderboardUnit
   m_TagString: Untagged
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-4271379325280031751
+--- !u!114 &3549858036557619738
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,9 +185,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1523552295664187655}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c04ff82e28fc8d48bf71345d538c424, type: 3}
+  m_Script: {fileID: 11500000, guid: 79e96bd71b27e0946af14718ec9e4ed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerName: {fileID: 1523552296976962225}
+  score: {fileID: 6523786594745772499}
 --- !u!1 &1523552296976962239
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +202,7 @@ GameObject:
   - component: {fileID: 1523552296976962224}
   - component: {fileID: 1523552296976962225}
   m_Layer: 0
-  m_Name: Text
+  m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -485,7 +487,7 @@ GameObject:
   - component: {fileID: 6523786594745772496}
   - component: {fileID: 6523786594745772499}
   m_Layer: 0
-  m_Name: Text (1)
+  m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
