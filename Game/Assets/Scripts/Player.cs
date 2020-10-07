@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,14 @@ public class Player : NetworkBehaviour
     void Awake()
     {
         networkMatchChecker = GetComponent<NetworkMatchChecker>();
+    }
+
+    private void Update()
+    {
+        if (localPlayer)
+        {
+            transform.position += Vector3.forward * Time.deltaTime * Input.GetAxis("Horizontal");
+        }
     }
 
     public override void OnStartClient()
@@ -220,9 +229,8 @@ public class Player : NetworkBehaviour
         UILobby.instance.DisableLobbyUI();
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
     }
+    
+    // Game
 
 
-    /*
-            IN GAME
-    */
 }
