@@ -2,7 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Policy;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 public class Player : NetworkBehaviour
@@ -11,31 +13,26 @@ public class Player : NetworkBehaviour
     public static Player localPlayer;
     [SyncVar] public string matchID;
     [SyncVar] public int playerIndex;
-
+    
     NetworkMatchChecker networkMatchChecker;
 
     [SyncVar] public Match currentMatch;
 
     [SerializeField] GameObject playerLobbyUI;
 
+    [SerializeField] public GameObject snakePrefab;
+    public Snake localSnake;
+
     void Awake()
     {
         networkMatchChecker = GetComponent<NetworkMatchChecker>();
-    }
-
-    private void Update()
-    {
-        if (localPlayer)
-        {
-            transform.position += Vector3.forward * Time.deltaTime * Input.GetAxis("Horizontal");
-        }
     }
 
     public override void OnStartClient()
     {
         if (isLocalPlayer)
         {
-            Debug.Log($"Spawning local player UI Prefab"); ;
+            Debug.Log($"Spawning local player UI Prefab");
             localPlayer = this;
         }
         else
@@ -146,6 +143,8 @@ public class Player : NetworkBehaviour
     void ServerDisconnect()
     {
         MatchMaker.instance.PlayerDisconnected(this, matchID);
+        NetworkServer.UnSpawn(localSnake.gameObject);
+        GameManager.instance.RemovePlayer(this);
         RpcDisconnectGame();
         networkMatchChecker.matchId = string.Empty.ToGuid();
     }
@@ -229,8 +228,5 @@ public class Player : NetworkBehaviour
         UILobby.instance.DisableLobbyUI();
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
     }
-    
     // Game
-
-
 }

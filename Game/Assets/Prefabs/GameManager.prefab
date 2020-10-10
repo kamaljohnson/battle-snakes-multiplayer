@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3334737496416693694}
   - component: {fileID: 3334737496416693695}
   - component: {fileID: 3334737496416693693}
+  - component: {fileID: 2491755957439152716}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -63,6 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  gameboard: {fileID: 2491755957439152716}
 --- !u!114 &3334737496416693693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,3 +80,17 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   currentMatchDebug: 
+--- !u!114 &2491755957439152716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3334737496416693681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b3b8ce0ad6388d4089b9c5fd067a165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1

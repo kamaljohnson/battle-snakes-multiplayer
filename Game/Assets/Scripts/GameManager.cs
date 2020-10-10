@@ -2,15 +2,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
     public static GameManager instance;
 
-
     List<Player> players = new List<Player>();
     int [,] gameBoard;
+
+    public GameBoard gameboard;
 
     // Start is called before the first frame update
     void Start()
@@ -26,15 +28,19 @@ public class GameManager : NetworkBehaviour
         players.Add(_player);
     }
 
+    public void RemovePlayer(Player _player)
+    {
+        Debug.Log($"Removeing player");
+        players.Remove(_player);
+
+    }
+
     public void SpawnAllPlayerSnakes()
     {
         Debug.Log($"Spawning snake: GameManager");
-        foreach (var _localPlayer in players)
+        foreach (var _player in players)
         {
-            foreach(var _player in players)
-            {
-                
-            }
+            gameboard.SpawnSnake(_player.playerIndex);
         }
     }
 

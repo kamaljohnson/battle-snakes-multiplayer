@@ -152,6 +152,7 @@ public class MatchMaker : NetworkBehaviour
                     gameManager.AddPlayer(_player);
                     _player.StartGame();
                 }
+                gameManager.SpawnAllPlayerSnakes();
                 break;
             }
         }
