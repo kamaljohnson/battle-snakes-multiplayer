@@ -223,6 +223,7 @@ public class Player : NetworkBehaviour
         //Additively load game scene
         UILobby.instance.DisableLobbyUI();
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
+
     }
 
     // Game
@@ -232,5 +233,13 @@ public class Player : NetworkBehaviour
         localSnake = Instantiate(snakePrefab);
         localSnake.transform.position = new Vector3(loc.Item1, localSnake.transform.position.y, loc.Item2);
         NetworkServer.Spawn(localSnake);
+
+        TargetAddInputHandler();
+    }
+
+    [TargetRpc]
+    public void TargetAddInputHandler()
+    {
+        gameObject.GetComponent<PlayerInput>().isLocal = true;
     }
 }

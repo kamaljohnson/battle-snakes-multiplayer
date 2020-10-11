@@ -6,24 +6,33 @@ public class Snake : NetworkBehaviour
 
     public void Update()
     {
-        if (isServer)
-        {
-            Move();
-        }
+
     }
 
-    public void Control()
+    public void HandleInput()
     {
 
+    }
+
+    // Called from the local player to control the movement of the snake
+    public void Control(Direction direction)
+    {
+        ServerControl(direction);
+    }
+
+    [Command]
+    public void ServerControl(Direction direction)
+    {
+        Debug.Log("control received at the server : " + direction);
     }
 
     public void Move()
     {
-        transform.position += Vector3.forward * Random.Range(-10f, 10f) * Time.deltaTime;
+        TargetMove();
     }
 
-    [ClientRpc]
-    public void ClientMove()
+    [TargetRpc]
+    public void TargetMove()
     {
 
     }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1369261305418585975}
   - component: {fileID: 7624418505737353760}
   - component: {fileID: 8976867536270061640}
+  - component: {fileID: 5393099226735214936}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -88,3 +89,66 @@ MonoBehaviour:
   playerLobbyUI: {fileID: 0}
   snakePrefab: {fileID: 4572321378941926390, guid: fde7306f56f8ba0448ec09d8880b9656, type: 3}
   localSnake: {fileID: 0}
+--- !u!114 &5393099226735214936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369261305418585973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3030efb2247943448ab436ed1e33e9f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocal: 0
+  wasd:
+    m_Name: Wasd
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b50d4223-31f2-4dbc-be2b-11241441c775
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 2D Vector
+      m_Id: b025b46c-4d17-4261-a686-2bf854b64607
+      m_Path: 2DVector
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Wasd
+      m_Flags: 4
+    - m_Name: up
+      m_Id: 7b7c04d3-f62d-4da3-a9c7-28694b722ee3
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Wasd
+      m_Flags: 8
+    - m_Name: down
+      m_Id: 75293d2c-64ed-46cd-a961-3c7c6280fe89
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Wasd
+      m_Flags: 8
+    - m_Name: left
+      m_Id: b0d3200c-4f58-4d2f-bd9e-a66df1881eac
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Wasd
+      m_Flags: 8
+    - m_Name: right
+      m_Id: 8fe6b675-fc0f-4a8e-82de-2f275ab354f6
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Wasd
+      m_Flags: 8
+  inputDirection: 0
+  directionChange: 0

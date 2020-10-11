@@ -64,7 +64,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  speed: 0
 --- !u!114 &-5183591398832253028
 MonoBehaviour:
   m_ObjectHideFlags: 0
