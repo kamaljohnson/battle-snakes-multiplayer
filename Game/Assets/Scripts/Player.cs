@@ -1,10 +1,5 @@
 ﻿using Mirror;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Policy;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 public class Player : NetworkBehaviour
@@ -21,7 +16,7 @@ public class Player : NetworkBehaviour
     [SerializeField] GameObject playerLobbyUI;
 
     [SerializeField] public GameObject snakePrefab;
-    public Snake localSnake;
+    public GameObject localSnake;
 
     void Awake()
     {
@@ -228,5 +223,12 @@ public class Player : NetworkBehaviour
         UILobby.instance.DisableLobbyUI();
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
     }
+
     // Game
+    public void SpawnSnake()
+    {
+        Debug.Log("Spawing snake");
+        localSnake = Instantiate(snakePrefab, transform);
+        NetworkServer.Spawn(localSnake);
+    }
 }

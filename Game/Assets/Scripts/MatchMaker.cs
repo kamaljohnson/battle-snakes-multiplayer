@@ -60,7 +60,7 @@ public class MatchMaker : NetworkBehaviour
             matches.Add(match);
             Debug.Log($"Match generated");
             _player.GetComponent<Player>().currentMatch = match;
-            playerIndex = 1;
+            playerIndex = 0;
             return true;
         }
         else
@@ -85,7 +85,7 @@ public class MatchMaker : NetworkBehaviour
                     {
                         matches[i].players.Add(_player);
                         _player.GetComponent<Player>().currentMatch = matches[i];
-                        playerIndex = matches[i].players.Count;
+                        playerIndex = matches[i].players.Count - 1;
 
                         if (matches[i].players.Count == maxMatchPlayers)
                         {
@@ -134,10 +134,12 @@ public class MatchMaker : NetworkBehaviour
 
     public void BeginGame(string _matchID)
     {
-        GameObject newGameManager = Instantiate(gameManagerPrefab);
-        NetworkServer.Spawn(newGameManager);
-        newGameManager.GetComponent<NetworkMatchChecker>().matchId = _matchID.ToGuid();
-        GameManager gameManager = newGameManager.GetComponent<GameManager>();
+        GameObject gameManagerObj = Instantiate(gameManagerPrefab);
+        GameManager gameManager = gameManagerObj.GetComponent<GameManager>();
+        gameManager.SetMatchId(_matchID.ToGuid());
+        gameManager.InitGameBoard();
+
+        NetworkServer.Spawn(gameManagerObj);
 
         // Instantiate a game login manager
 
@@ -146,6 +148,7 @@ public class MatchMaker : NetworkBehaviour
             if (matches[i].matchID == _matchID)
             {
                 matches[i].inMatch = true;
+
                 foreach (var player in matches[i].players)
                 {
                     Player _player = player.GetComponent<Player>();

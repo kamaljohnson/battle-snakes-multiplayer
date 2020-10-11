@@ -3,29 +3,46 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
     public static GameManager instance;
 
-    List<Player> players = new List<Player>();
-    int [,] gameBoard;
+    public List<Player> players = new List<Player>();
 
-    public GameBoard gameboard;
+    public GameObject gameBoardPrefab;
 
-    // Start is called before the first frame update
-    void Start()
+    GameBoard gameBoard;
+    NetworkMatchChecker networkMatchChecker;
+
+    // Start is called before the first frame updatesss
+    void Awake()
     {
-        if (!isServer) return;
-
+        networkMatchChecker = GetComponent<NetworkMatchChecker>();
         instance = this;
+    }
+
+    public void SetMatchId(Guid _matchId)
+    {
+        networkMatchChecker.matchId = _matchId;
+    }
+
+    public void InitGameBoard()
+    {
+        GameObject gameBoardObj = Instantiate(gameBoardPrefab);
+        gameBoard = gameBoardObj.GetComponent<GameBoard>();
+        gameBoard.SetMatchId(networkMatchChecker.matchId);
+
+        NetworkServer.Spawn(gameBoardObj);
     }
 
     public void AddPlayer(Player _player)
     {
         Debug.Log($"Adding player");
         players.Add(_player);
+        Debug.Log($"After adding player : " + players.Count);
     }
 
     public void RemovePlayer(Player _player)
@@ -40,7 +57,7 @@ public class GameManager : NetworkBehaviour
         Debug.Log($"Spawning snake: GameManager");
         foreach (var _player in players)
         {
-            gameboard.SpawnSnake(_player.playerIndex);
+            gameBoard.SpawnSnake(_player.GetComponent<Player>().playerIndex);
         }
     }
 
@@ -48,5 +65,11 @@ public class GameManager : NetworkBehaviour
     {
         //TODO: get a non occupied point in game board
         return new Tuple<int, int>(0, 0);
+    }
+
+    public Player GetPlayer(int _playerIndex)
+    {
+        Debug.Log($"GetPlayer: " + players.Count);
+        return players[_playerIndex].GetComponent<Player>();
     }
 }
