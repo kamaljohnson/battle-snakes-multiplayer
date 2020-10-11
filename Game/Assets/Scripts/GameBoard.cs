@@ -31,17 +31,11 @@ public class GameBoard : NetworkBehaviour
         Debug.Log("Spawning snake from game board " + GameManager.instance.players);
         Tuple<int, int> loc = GetFreeSpawnLocation(_playerIndex);
 
-        UpdateBoardSnakes(_playerIndex);
+        players.Find(x => x.playerIndex == _playerIndex).SpawnSnake();
     }
 
     public Tuple<int, int> GetFreeSpawnLocation(int _playerIndex)
     {
         return new Tuple<int, int>(0, _playerIndex);
-    }
-
-    [ClientRpc]
-    public void UpdateBoardSnakes(int _playerIndex)
-    {   
-        Debug.Log("Update board snakes: " + _playerIndex);
     }
 }

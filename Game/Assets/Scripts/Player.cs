@@ -228,7 +228,7 @@ public class Player : NetworkBehaviour
     public void SpawnSnake()
     {
         Debug.Log("Spawing snake");
-        localSnake = Instantiate(snakePrefab, transform);
+        localSnake = Instantiate(snakePrefab);
         NetworkServer.Spawn(localSnake);
     }
 }
