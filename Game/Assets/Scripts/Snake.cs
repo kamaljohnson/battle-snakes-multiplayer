@@ -1,7 +1,5 @@
 ﻿using Mirror;
 using UnityEngine;
-using System.Collections;
-using UnityEditor;
 
 public class Snake : NetworkBehaviour
 {

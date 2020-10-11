@@ -1,9 +1,6 @@
 ﻿using Mirror;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Security.Policy;
 using UnityEngine;
 
 public class GameManager : NetworkBehaviour
