@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -225,10 +226,11 @@ public class Player : NetworkBehaviour
     }
 
     // Game
-    public void SpawnSnake()
+    public void SpawnSnake(Tuple<int, int> loc)
     {
         Debug.Log("Spawing snake");
         localSnake = Instantiate(snakePrefab);
+        localSnake.transform.position = new Vector3(loc.Item1, localSnake.transform.position.y, loc.Item2);
         NetworkServer.Spawn(localSnake);
     }
 }

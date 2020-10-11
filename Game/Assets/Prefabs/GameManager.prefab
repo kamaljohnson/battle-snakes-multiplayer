@@ -64,7 +64,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   players: []
-  gameBoardPrefab: {fileID: 4023966194922483501, guid: 448b7309fe5f2cc45ba30837624c05e1, type: 3}
+  gameBoardPrefab: {fileID: 1583877589559309481, guid: 448b7309fe5f2cc45ba30837624c05e1, type: 3}
 --- !u!114 &3334737496416693693
 MonoBehaviour:
   m_ObjectHideFlags: 0
