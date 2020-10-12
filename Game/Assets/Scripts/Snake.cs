@@ -3,28 +3,55 @@ using UnityEngine;
 
 public class Snake : NetworkBehaviour
 {
+    public SnakeTail head;
 
-    public void Update()
+    public Direction movementDirection;
+    public Direction nextDirection;
+
+    public void InitMovement(Direction direction)
     {
-        if (isServer)
-        {
-            Move();
-        }
+        head.InitMovement(direction);
+
+        ClientInitMovement(direction);
     }
 
-    public void Control()
+    public void StartMoving()
     {
+        head.StartMoving();
 
+        ClientStartMoving();
     }
 
-    public void Move()
+    public void ChangeNextDirection(Direction direction)
     {
-        transform.position += Vector3.forward * Random.Range(-10f, 10f) * Time.deltaTime;
+        nextDirection = direction;
+    }
+
+    public void HeadReachedNextLoc()
+    {
+        movementDirection = nextDirection;
+        head.ChangeDirection(movementDirection);
+
+        ClientChangeHeadDirection(movementDirection);
     }
 
     [ClientRpc]
-    public void ClientMove()
+    public void ClientChangeHeadDirection(Direction direction)
     {
-
+        movementDirection = direction;
+        head.ChangeDirection(movementDirection);
     }
+
+    [ClientRpc]
+    public void ClientInitMovement(Direction direction)
+    {
+        head.InitMovement(direction);
+    }
+
+    [ClientRpc]
+    public void ClientStartMoving()
+    {
+        head.StartMoving();
+    }
+
 }
