@@ -3,37 +3,55 @@ using UnityEngine;
 
 public class Snake : NetworkBehaviour
 {
+    public SnakeTail head;
 
-    public void Update()
+    public Direction movementDirection;
+    public Direction nextDirection;
+
+    public void InitMovement(Direction direction)
     {
+        head.InitMovement(direction);
 
+        ClientInitMovement(direction);
     }
 
-    public void HandleInput()
+    public void StartMoving()
     {
+        head.StartMoving();
 
+        ClientStartMoving();
     }
 
-    // Called from the local player to control the movement of the snake
-    public void Control(Direction direction)
+    public void ChangeNextDirection(Direction direction)
     {
-        ServerControl(direction);
+        nextDirection = direction;
     }
 
-    [Command]
-    public void ServerControl(Direction direction)
+    public void HeadReachedNextLoc()
     {
-        Debug.Log("control received at the server : " + direction);
+        movementDirection = nextDirection;
+        head.ChangeDirection(movementDirection);
+
+        ClientChangeHeadDirection(movementDirection);
     }
 
-    public void Move()
+    [ClientRpc]
+    public void ClientChangeHeadDirection(Direction direction)
     {
-        TargetMove();
+        movementDirection = direction;
+        head.ChangeDirection(movementDirection);
     }
 
-    [TargetRpc]
-    public void TargetMove()
+    [ClientRpc]
+    public void ClientInitMovement(Direction direction)
     {
-
+        head.InitMovement(direction);
     }
+
+    [ClientRpc]
+    public void ClientStartMoving()
+    {
+        head.StartMoving();
+    }
+
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,6 +23,8 @@ public class PlayerInput : NetworkBehaviour
     private Direction tempInputDirection;
     public bool directionChange;
 
+    public int playerIndex;
+
     void OnEnable()
     {
         wasd.Enable();
@@ -30,6 +33,13 @@ public class PlayerInput : NetworkBehaviour
     void OnDisable()
     {
         wasd.Disable();
+    }
+
+    public void Start()
+    {
+        playerIndex = GetComponent<Player>().playerIndex;
+        if (!isLocal) return;
+        SerndInputDirectionToServer(inputDirection);
     }
 
     void Update()
@@ -107,6 +117,8 @@ public class PlayerInput : NetworkBehaviour
     [Command]
     public void SerndInputDirectionToServer(Direction direction)
     {
-        Debug.Log("Player : " + gameObject.GetComponent<Player>().playerIndex +  " input direction changed to : " + direction);
+        Debug.Log("Player : input direction changed to : " + direction);
+
+        GetComponent<Player>().localSnake.nextDirection = direction;
     }
 }

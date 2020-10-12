@@ -17,7 +17,7 @@ public class Player : NetworkBehaviour
     [SerializeField] GameObject playerLobbyUI;
 
     [SerializeField] public GameObject snakePrefab;
-    public GameObject localSnake;
+    public Snake localSnake;
 
     void Awake()
     {
@@ -227,14 +227,21 @@ public class Player : NetworkBehaviour
     }
 
     // Game
-    public void SpawnSnake(Tuple<int, int> loc)
+    public Snake SpawnSnake(Tuple<int, int> loc, Direction movementDirection)
     {
         Debug.Log("Spawing snake");
-        localSnake = Instantiate(snakePrefab);
-        localSnake.transform.position = new Vector3(loc.Item1, localSnake.transform.position.y, loc.Item2);
-        NetworkServer.Spawn(localSnake);
+        GameObject localSnakeObj = Instantiate(snakePrefab);
+        localSnakeObj.transform.position = new Vector3(loc.Item1, localSnakeObj.transform.position.y, loc.Item2);
+        NetworkServer.Spawn(localSnakeObj);
 
         TargetAddInputHandler();
+
+        localSnake = localSnakeObj.GetComponent<Snake>();
+
+        localSnake.InitMovement(movementDirection);
+        localSnake.StartMoving();
+
+        return localSnake;
     }
 
     [TargetRpc]

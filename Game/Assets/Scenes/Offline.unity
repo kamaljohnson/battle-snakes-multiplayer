@@ -321,7 +321,7 @@ MonoBehaviour:
   offlineScene: Assets/Scenes/Offline.unity
   onlineScene: Assets/Scenes/Lobby.unity
   transport: {fileID: 1801887952}
-  networkAddress: 192.168.1.2
+  networkAddress: localhost
   maxConnections: 200
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
