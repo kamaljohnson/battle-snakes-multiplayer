@@ -7,10 +7,19 @@ public class SnakeTail : NetworkBehaviour
     public SnakeTail nextTail;
 
     public bool isHead;
+    private Snake snake;
 
     [SyncVar] public bool isMoving;
 
     public Direction movementDirection;
+
+    private void Awake()
+    {
+        if (isHead)
+        {
+            snake = GetComponent<Snake>();
+        }
+    }
 
     void Update()
     {
@@ -25,23 +34,20 @@ public class SnakeTail : NetworkBehaviour
 
     public void Move()
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(nextLoc.x, transform.localPosition.y, nextLoc.y), 2 * Time.deltaTime);
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(nextLoc.x, transform.localPosition.y, nextLoc.y), 5 * Time.deltaTime);
 
-        if (isServer)
+        if (isServer && isHead)
         {
             CheckNextLocReached();
         }
     }
 
-    [Server]
+    [Server] // Only called if the tail snake head
     public void CheckNextLocReached()
     {
         if (Vector3.Distance(transform.localPosition, new Vector3(nextLoc.x, transform.localPosition.y, nextLoc.y)) <= 0.01f) 
         {
-            if(isHead)
-            {
-                GetComponent<Snake>().HeadReachedNextLoc();
-            }
+            snake.HeadReachedNextLoc();
         }
     }
 

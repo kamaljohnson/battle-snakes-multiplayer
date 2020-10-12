@@ -41,7 +41,7 @@ public class PlayerInput : NetworkBehaviour
         if (!isLocal) return;
         SerndInputDirectionToServer(inputDirection);
     }
-
+    
     void Update()
     {
         if (!isLocal) return;
@@ -117,8 +117,6 @@ public class PlayerInput : NetworkBehaviour
     [Command]
     public void SerndInputDirectionToServer(Direction direction)
     {
-        Debug.Log("Player : input direction changed to : " + direction);
-
         GetComponent<Player>().localSnake.nextDirection = direction;
     }
 }
