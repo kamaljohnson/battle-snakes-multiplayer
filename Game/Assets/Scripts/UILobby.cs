@@ -22,6 +22,7 @@ public class UILobby : MonoBehaviour
     [SerializeField] GameObject UIPlayerPrefab;
     [SerializeField] TMP_Text matchIDText;
     [SerializeField] GameObject beginGameButton;
+    [SerializeField] GameObject lobbyUI;
 
     GameObject localPlayerLobbyUI;
 
@@ -159,6 +160,11 @@ public class UILobby : MonoBehaviour
             yield return null;
         }
         searchCanvas.enabled = false;
+    }
+
+    public void DisableLobbyUI()
+    {
+        lobbyUI.SetActive(false);
     }
 
 }
