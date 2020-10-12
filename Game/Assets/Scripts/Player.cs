@@ -1,6 +1,5 @@
 ﻿using Mirror;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,12 +9,15 @@ public class Player : NetworkBehaviour
     public static Player localPlayer;
     [SyncVar] public string matchID;
     [SyncVar] public int playerIndex;
-
+    
     NetworkMatchChecker networkMatchChecker;
 
     [SyncVar] public Match currentMatch;
 
     [SerializeField] GameObject playerLobbyUI;
+
+    [SerializeField] public GameObject snakePrefab;
+    public GameObject localSnake;
 
     void Awake()
     {
@@ -26,7 +28,7 @@ public class Player : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            Debug.Log($"Spawning local player UI Prefab"); ;
+            Debug.Log($"Spawning local player UI Prefab");
             localPlayer = this;
         }
         else
@@ -137,6 +139,8 @@ public class Player : NetworkBehaviour
     void ServerDisconnect()
     {
         MatchMaker.instance.PlayerDisconnected(this, matchID);
+        NetworkServer.UnSpawn(localSnake.gameObject);
+        GameManager.instance.RemovePlayer(this);
         RpcDisconnectGame();
         networkMatchChecker.matchId = string.Empty.ToGuid();
     }
@@ -221,8 +225,12 @@ public class Player : NetworkBehaviour
         SceneManager.LoadScene(2, LoadSceneMode.Additive);
     }
 
-
-    /*
-            IN GAME
-    */
+    // Game
+    public void SpawnSnake(Tuple<int, int> loc)
+    {
+        Debug.Log("Spawing snake");
+        localSnake = Instantiate(snakePrefab);
+        localSnake.transform.position = new Vector3(loc.Item1, localSnake.transform.position.y, loc.Item2);
+        NetworkServer.Spawn(localSnake);
+    }
 }

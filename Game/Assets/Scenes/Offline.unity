@@ -313,7 +313,7 @@ MonoBehaviour:
   offlineScene: Assets/Scenes/Offline.unity
   onlineScene: Assets/Scenes/Lobby.unity
   transport: {fileID: 1801887952}
-  networkAddress: localhost
+  networkAddress: 192.168.1.2
   maxConnections: 200
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
@@ -321,7 +321,14 @@ MonoBehaviour:
   playerPrefab: {fileID: 1369261305418585973, guid: 748c61959b0e05547acd80b0e1c07faf, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 1369261305418585973, guid: 748c61959b0e05547acd80b0e1c07faf, type: 3}
+  - {fileID: 3334737496416693681, guid: 6fcd83568662399419e72c098264cfe8, type: 3}
+  - {fileID: 1523552295664187655, guid: 183f59fd908387142bff550e4d1a0878, type: 3}
+  - {fileID: 4572321378941926390, guid: fde7306f56f8ba0448ec09d8880b9656, type: 3}
+  - {fileID: 1583877589559309481, guid: 448b7309fe5f2cc45ba30837624c05e1, type: 3}
+  - {fileID: 3334737496416693681, guid: 6fcd83568662399419e72c098264cfe8, type: 3}
+  - {fileID: 8306813868397453032, guid: 136c7c58533e06d48b1f6ba4400daf03, type: 3}
 --- !u!4 &1801887954
 Transform:
   m_ObjectHideFlags: 0
