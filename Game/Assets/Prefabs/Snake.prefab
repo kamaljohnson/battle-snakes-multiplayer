@@ -66,6 +66,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   head: {fileID: 3470585035712066543}
+  tailPrefab: {fileID: 8306813868397453032, guid: 136c7c58533e06d48b1f6ba4400daf03, type: 3}
+  speed: 3
   movementDirection: 0
   nextDirection: 0
 --- !u!114 &3470585035712066543
@@ -82,6 +84,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0
+  id: 0
+  speed: 0
+  tailPrefab: {fileID: 8306813868397453032, guid: 136c7c58533e06d48b1f6ba4400daf03, type: 3}
   nextLoc: {x: 0, y: 0}
   nextTail: {fileID: 0}
   isHead: 1

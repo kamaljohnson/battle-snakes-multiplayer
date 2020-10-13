@@ -117,6 +117,6 @@ public class PlayerInput : NetworkBehaviour
     [Command]
     public void SerndInputDirectionToServer(Direction direction)
     {
-        GetComponent<Player>().localSnake.nextDirection = direction;
+        GetComponent<Player>().localSnake.ChangeNextDirection(direction);
     }
 }

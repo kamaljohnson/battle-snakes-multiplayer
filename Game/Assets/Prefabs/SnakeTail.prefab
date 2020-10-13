@@ -47,10 +47,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
+  tailPrefab: {fileID: 8306813868397453032}
   nextLoc: {x: 0, y: 0}
   nextTail: {fileID: 0}
-  isMoving: 1
+  isHead: 0
+  isMoving: 0
   movementDirection: 0
 --- !u!114 &7599494883412079200
 MonoBehaviour:

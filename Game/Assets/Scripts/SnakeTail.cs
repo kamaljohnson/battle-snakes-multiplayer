@@ -1,9 +1,21 @@
 ﻿using Mirror;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SnakeTail : NetworkBehaviour
 {
+    public int id;
+    private static int recursiveLastId = 0;
+
+    [SyncVar] public int speed;
+
+    public static List<SnakeTail> allTails = new List<SnakeTail>();
+
+    public GameObject tailPrefab;
+
     public Vector2 nextLoc;
+    private Vector2 prevLoc;
     public SnakeTail nextTail;
 
     public bool isHead;
@@ -15,6 +27,11 @@ public class SnakeTail : NetworkBehaviour
 
     private void Awake()
     {
+        recursiveLastId++;
+        id = recursiveLastId;
+
+        if (!isServer) allTails.Add(this);
+
         if (isHead)
         {
             snake = GetComponent<Snake>();
@@ -34,7 +51,7 @@ public class SnakeTail : NetworkBehaviour
 
     public void Move()
     {
-        transform.localPosition = Vector3.MoveTowards(transform.localPosition, new Vector3(nextLoc.x, transform.localPosition.y, nextLoc.y), 5 * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(nextLoc.x, transform.position.y, nextLoc.y), speed * Time.deltaTime);
 
         if (isServer && isHead)
         {
@@ -45,7 +62,7 @@ public class SnakeTail : NetworkBehaviour
     [Server] // Only called if the tail snake head
     public void CheckNextLocReached()
     {
-        if (Vector3.Distance(transform.localPosition, new Vector3(nextLoc.x, transform.localPosition.y, nextLoc.y)) <= 0.01f) 
+        if (Vector3.Distance(transform.position, new Vector3(nextLoc.x, transform.position.y, nextLoc.y)) <= 0.01f) 
         {
             snake.HeadReachedNextLoc();
         }
@@ -54,7 +71,8 @@ public class SnakeTail : NetworkBehaviour
     public void InitMovement(Direction direction)
     {
         movementDirection = direction;
-        nextLoc = new Vector2(transform.localPosition.x, transform.localPosition.z);
+        nextLoc = new Vector2(transform.position.x, transform.position.z);
+        prevLoc = nextLoc;
         SetNewNextLoc();
 
         if(nextTail != null)
@@ -65,7 +83,14 @@ public class SnakeTail : NetworkBehaviour
 
     public void ChangeDirection(Direction direction)
     {
-        transform.localPosition = new Vector3(nextLoc.x, transform.localPosition.y, nextLoc.y);
+        if (!isMoving)
+        {
+            InitMovement(direction);
+            StartMoving();
+            return;
+        } //If the tail is newly created then start moving
+
+        transform.position = new Vector3(nextLoc.x, transform.position.y, nextLoc.y);
         
         if(nextTail != null)
         {
@@ -79,6 +104,7 @@ public class SnakeTail : NetworkBehaviour
 
     public void SetNewNextLoc()
     {
+        prevLoc = nextLoc;
         switch (movementDirection)
         {
             case Direction.Forward:
@@ -95,4 +121,30 @@ public class SnakeTail : NetworkBehaviour
                 break;
         }
     }
+
+    [Server]
+    public Vector3 GetNewEndTailLocation(SnakeTail tail)
+    {
+        if(nextTail != null)
+        {
+            return nextTail.GetNewEndTailLocation(tail);
+        } else
+        {
+            nextTail = tail;
+            return (new Vector3(prevLoc.x, transform.position.y, prevLoc.y));
+        }
+    }
+
+    [Client]
+    public void ClientSetSpawnedTailToEnd(int id)
+    {
+        if(nextTail != null)
+        {
+            nextTail.ClientSetSpawnedTailToEnd(id);
+        } else
+        {
+            nextTail = allTails.Find(x => x.id == id);
+        }
+    }
+
 }

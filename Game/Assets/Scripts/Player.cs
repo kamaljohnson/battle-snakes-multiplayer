@@ -241,6 +241,8 @@ public class Player : NetworkBehaviour
         localSnake.InitMovement(movementDirection);
         localSnake.StartMoving();
 
+        localSnake.SpawnTail(20);
+
         return localSnake;
     }
 
