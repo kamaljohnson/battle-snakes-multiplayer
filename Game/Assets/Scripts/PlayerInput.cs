@@ -7,20 +7,41 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [SerializeField]
-public enum Direction
+public static class DirectionHelper
 {
-    Forward,
-    Back,
-    Right,
-    Left
+    public enum Directions
+    {
+        Forward,
+        Back,
+        Right,
+        Left
+    }
+
+    public static Vector3 GetVector3ForDirection(Directions direction)
+    {
+        switch (direction)
+        {
+            case Directions.Forward:
+                return Vector3.forward;
+            case Directions.Back:
+                return Vector3.back;
+            case Directions.Right:
+                return Vector3.right;
+            case Directions.Left:
+                return Vector3.left;
+        }
+
+        // this block is never reached
+        return Vector3.zero;
+    }
 }
 
 public class PlayerInput : NetworkBehaviour
 {
     public bool isLocal = false;
     public InputAction wasd;
-    public Direction inputDirection;
-    private Direction tempInputDirection;
+    public DirectionHelper.Directions inputDirection;
+    private DirectionHelper.Directions tempInputDirection;
     public bool directionChange;
 
     public int playerIndex;
@@ -61,11 +82,11 @@ public class PlayerInput : NetworkBehaviour
 
         if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
         {
-            tempInputDirection = input.x > 0 ? Direction.Right : Direction.Left; 
+            tempInputDirection = input.x > 0 ? DirectionHelper.Directions.Right : DirectionHelper.Directions.Left; 
 
         } else if (Mathf.Abs(input.y) > 0)
         {
-            tempInputDirection = input.y > 0 ? Direction.Forward : Direction.Back;
+            tempInputDirection = input.y > 0 ? DirectionHelper.Directions.Forward : DirectionHelper.Directions.Back;
         } else
         {
             //Do noting
@@ -82,29 +103,29 @@ public class PlayerInput : NetworkBehaviour
 
         switch (tempInputDirection)
         {
-            case Direction.Forward:
-                if(inputDirection == Direction.Back)
+            case DirectionHelper.Directions.Forward:
+                if(inputDirection == DirectionHelper.Directions.Back)
                 {
                     directionChange = false;
                     return;
                 }
                 break;
-            case Direction.Back:
-                if (inputDirection == Direction.Forward)
+            case DirectionHelper.Directions.Back:
+                if (inputDirection == DirectionHelper.Directions.Forward)
                 {
                     directionChange = false;
                     return;
                 }
                 break;
-            case Direction.Right:
-                if (inputDirection == Direction.Left)
+            case DirectionHelper.Directions.Right:
+                if (inputDirection == DirectionHelper.Directions.Left)
                 {
                     directionChange = false;
                     return;
                 }
                 break;
-            case Direction.Left:
-                if (inputDirection == Direction.Right)
+            case DirectionHelper.Directions.Left:
+                if (inputDirection == DirectionHelper.Directions.Right)
                 {
                     directionChange = false;
                     return;
@@ -115,7 +136,7 @@ public class PlayerInput : NetworkBehaviour
     }
 
     [Command]
-    public void SerndInputDirectionToServer(Direction direction)
+    public void SerndInputDirectionToServer(DirectionHelper.Directions direction)
     {
         GetComponent<Player>().localSnake.ChangeNextDirection(direction);
     }

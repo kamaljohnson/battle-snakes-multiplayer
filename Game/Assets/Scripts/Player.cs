@@ -230,7 +230,7 @@ public class Player : NetworkBehaviour
 
     // Game
     [Server]
-    public Snake SpawnSnake(Tuple<int, int> loc, Direction movementDirection)
+    public Snake SpawnSnake(Tuple<int, int> loc, DirectionHelper.Directions movementDirection)
     {
         Debug.Log("SPAWN SNAKE : PLAYER INDEX : " + playerIndex + " MATCH ID: " + networkMatchChecker.matchId);
         GameObject localSnakeObj = Instantiate(snakePrefab);

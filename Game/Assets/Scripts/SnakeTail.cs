@@ -25,9 +25,16 @@ public class SnakeTail : NetworkBehaviour
 
     [SyncVar] public bool isMoving;
 
-    public Direction movementDirection;
+    public DirectionHelper.Directions movementDirection;
 
     NetworkMatchChecker networkMatchChecker;
+
+    // Filler
+    public GameObject fillerPrefab;
+    private GameObject filler;
+    private bool hasFiller;
+
+    private bool isEnd;
 
     private void Awake()
     {
@@ -78,7 +85,7 @@ public class SnakeTail : NetworkBehaviour
         }
     }
 
-    public void InitMovement(Direction direction)
+    public void InitMovement(DirectionHelper.Directions direction)
     {
         movementDirection = direction;
         nextLoc = new Vector2(transform.position.x, transform.position.z);
@@ -91,8 +98,11 @@ public class SnakeTail : NetworkBehaviour
         }
     }
 
-    public void ChangeDirection(Direction direction)
+    public void ChangeDirection(DirectionHelper.Directions direction)
     {
+
+        if (!isServer) HandleFiller(direction);
+
         if (!isMoving)
         {
             InitMovement(direction);
@@ -112,21 +122,38 @@ public class SnakeTail : NetworkBehaviour
 
     }
 
+    public void HandleFiller(DirectionHelper.Directions direction)
+    {
+        // Checking For filler needs
+        if (hasFiller)
+        {
+            Destroy(filler);
+            hasFiller = false;
+        }
+
+        if (movementDirection != direction && !isEnd)
+        {
+            // Instantiate filler
+            filler = Instantiate(fillerPrefab, new Vector3(nextLoc.x, transform.position.y, nextLoc.y), Quaternion.identity);
+            hasFiller = true;
+        }
+    }
+
     public void SetNewNextLoc()
     {
         prevLoc = nextLoc;
         switch (movementDirection)
         {
-            case Direction.Forward:
+            case DirectionHelper.Directions.Forward:
                 nextLoc += new Vector2(0, 1);
                 break;
-            case Direction.Back:
+            case DirectionHelper.Directions.Back:
                 nextLoc += new Vector2(0, -1);
                 break;
-            case Direction.Right:
+            case DirectionHelper.Directions.Right:
                 nextLoc += new Vector2(1, 0);
                 break;
-            case Direction.Left:
+            case DirectionHelper.Directions.Left:
                 nextLoc += new Vector2(-1, 0);
                 break;
         }
@@ -156,6 +183,9 @@ public class SnakeTail : NetworkBehaviour
             Debug.Log("SNAKE SIZE: " + allTails.Count);
             nextTail = allTails.Find(x => (x.playerIndex == _playerIndex) && !x.isAttached);
             nextTail.isAttached = true;
+
+            isEnd = false;
+            nextTail.isEnd = true;
         }
     }
 

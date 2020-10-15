@@ -96,6 +96,7 @@ MonoBehaviour:
   isHead: 1
   isMoving: 0
   movementDirection: 0
+  fillerPrefab: {fileID: 7496644287404347337, guid: f83b24588fda06c4db426322901fd767, type: 3}
 --- !u!33 &4501878269936757973
 MeshFilter:
   m_ObjectHideFlags: 0
