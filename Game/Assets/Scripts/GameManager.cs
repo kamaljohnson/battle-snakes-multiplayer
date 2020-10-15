@@ -26,19 +26,22 @@ public class GameManager : NetworkBehaviour
         networkMatchChecker.matchId = _matchId;
     }
 
-    public void InitGameBoard()
+    public void InitGameBoard(Guid matchId)
     {
         GameObject gameBoardObj = Instantiate(gameBoardPrefab);
+
         gameBoard = gameBoardObj.GetComponent<GameBoard>();
-        gameBoard.SetMatchId(networkMatchChecker.matchId);
+        gameBoard.SetMatchId(matchId);
 
         NetworkServer.Spawn(gameBoardObj);
+        
     }
 
     public void AddPlayer(Player _player)
     {
         Debug.Log($"Adding player");
         players.Add(_player);
+        gameBoard.AddPlayer(_player);
         Debug.Log($"After adding player : " + players.Count);
     }
 
@@ -49,24 +52,13 @@ public class GameManager : NetworkBehaviour
 
     }
 
+    [Server]
     public void SpawnAllPlayerSnakes()
     {
         Debug.Log($"Spawning snake: GameManager");
         foreach (var _player in players)
         {
-            gameBoard.SpawnSnake(_player.GetComponent<Player>().playerIndex);
+            gameBoard.SpawnSnake(_player);
         }
-    }
-
-    public Tuple<int, int> GetFreeLocationInGameBoard()
-    {
-        //TODO: get a non occupied point in game board
-        return new Tuple<int, int>(0, 0);
-    }
-
-    public Player GetPlayer(int _playerIndex)
-    {
-        Debug.Log($"GetPlayer: " + players.Count);
-        return players[_playerIndex].GetComponent<Player>();
     }
 }

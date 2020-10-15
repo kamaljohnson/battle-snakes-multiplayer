@@ -132,16 +132,17 @@ public class MatchMaker : NetworkBehaviour
         return false;
     }
 
+    [Server]
     public void BeginGame(string _matchID)
     {
         GameObject gameManagerObj = Instantiate(gameManagerPrefab);
         GameManager gameManager = gameManagerObj.GetComponent<GameManager>();
+        
         gameManager.SetMatchId(_matchID.ToGuid());
-        gameManager.InitGameBoard();
+        gameManager.InitGameBoard(_matchID.ToGuid());
 
         NetworkServer.Spawn(gameManagerObj);
 
-        // Instantiate a game login manager
 
         for (int i = 0; i < matches.Count; i++)
         {
@@ -155,7 +156,9 @@ public class MatchMaker : NetworkBehaviour
                     gameManager.AddPlayer(_player);
                     _player.StartGame();
                 }
+
                 gameManager.SpawnAllPlayerSnakes();
+                
                 break;
             }
         }
