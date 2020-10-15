@@ -12,34 +12,40 @@ public class GameBoard : NetworkBehaviour
 
     public Vector2 boardSize;
 
-    public static GameBoard instance;
-
     public void Awake()
     {
-        instance = this;
-
         networkMatchChecker = GetComponent<NetworkMatchChecker>();
-        InitPlayers();
     }
 
+    [Server]
     public void SetMatchId(Guid _matchId)
     {
         networkMatchChecker.matchId = _matchId;
     }
 
+    [Server]
     public void InitPlayers()
     {
         players = FindObjectsOfType<Player>().OrderBy(x => x.playerIndex).ToList();
     }
 
-    public void SpawnSnake(int _playerIndex)
+    [Server]
+    public void AddPlayer(Player _player)
+    {
+        players.Add(_player);
+    }
+
+    [Server]
+    public void SpawnSnake(Player _player)
     {
         Debug.Log("Spawning snake from game board " + GameManager.instance.players);
-        Tuple<int, int> loc = GetFreeSpawnLocation(_playerIndex);
+        Tuple<int, int> loc = GetFreeSpawnLocation();
 
-        snakes.Add(players.Find(x => x.playerIndex == _playerIndex).SpawnSnake(loc, Direction.Forward));
+        snakes.Add(_player.SpawnSnake(loc, Direction.Forward));
     }
-    public Tuple<int, int> GetFreeSpawnLocation(int _playerIndex)
+
+    [Server]
+    public Tuple<int, int> GetFreeSpawnLocation()
     {
         //TODO: change the random function to the actual get location
         return new Tuple<int, int>(UnityEngine.Random.Range(-(int)boardSize.x, (int)boardSize.x - 1), 

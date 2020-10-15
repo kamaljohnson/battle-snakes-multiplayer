@@ -163,6 +163,7 @@ public class Player : NetworkBehaviour
         SEARCH MATCH
     */
 
+    [Client]
     public void SearchGame()
     {
         Debug.Log("Player: SearchGame()");
@@ -198,7 +199,7 @@ public class Player : NetworkBehaviour
     /* 
         BEGIN MATCH
     */
-
+    [Client]
     public void BeginGame()
     {
         CmdBeginGame();
@@ -207,10 +208,11 @@ public class Player : NetworkBehaviour
     [Command]
     void CmdBeginGame()
     {
+        Debug.Log($"<color=red>GAME BEGINING</color> MATCH ID: " + matchID.ToGuid());
         MatchMaker.instance.BeginGame(matchID);
-        Debug.Log($"<color=red>Game Beginning</color>");
     }
 
+    [Server]
     public void StartGame()
     { //Server
         TargetBeginGame();
@@ -227,16 +229,22 @@ public class Player : NetworkBehaviour
     }
 
     // Game
+    [Server]
     public Snake SpawnSnake(Tuple<int, int> loc, Direction movementDirection)
     {
-        Debug.Log("Spawing snake");
+        Debug.Log("SPAWN SNAKE : PLAYER INDEX : " + playerIndex + " MATCH ID: " + networkMatchChecker.matchId);
         GameObject localSnakeObj = Instantiate(snakePrefab);
         localSnakeObj.transform.position = new Vector3(loc.Item1, localSnakeObj.transform.position.y, loc.Item2);
-        NetworkServer.Spawn(localSnakeObj);
+        
+        localSnake = localSnakeObj.GetComponent<Snake>();
+        localSnake.SetMatchId(networkMatchChecker.matchId);
 
+        localSnake.playerIndex = playerIndex;
+
+        NetworkServer.Spawn(localSnakeObj);
+        
         TargetAddInputHandler();
 
-        localSnake = localSnakeObj.GetComponent<Snake>();
 
         localSnake.InitMovement(movementDirection);
         localSnake.StartMoving();

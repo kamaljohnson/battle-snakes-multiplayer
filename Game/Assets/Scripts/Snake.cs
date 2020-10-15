@@ -1,9 +1,11 @@
 ﻿using Mirror;
+using System;
 using UnityEngine;
 
 public class Snake : NetworkBehaviour
 {
     public SnakeTail head;
+    [SyncVar] public int playerIndex;
 
     public GameObject tailPrefab;
 
@@ -13,6 +15,19 @@ public class Snake : NetworkBehaviour
     public Direction nextDirection;
 
     public int pendingTailCount;
+
+    NetworkMatchChecker networkMatchChecker;
+
+    public void Awake()
+    {
+        networkMatchChecker = GetComponent<NetworkMatchChecker>();
+    }
+
+    [Server]
+    public void SetMatchId(Guid _matchId)
+    {
+        networkMatchChecker.matchId = _matchId;
+    }
 
     [Server]
     public void InitMovement(Direction direction)
@@ -51,20 +66,26 @@ public class Snake : NetworkBehaviour
     [Server]
     public void SpawnTail(int count = 1)
     {
-        GameObject tail = Instantiate(tailPrefab);
+        GameObject tailObj = Instantiate(tailPrefab);
 
-        tail.transform.position = head.GetNewEndTailLocation(tail.GetComponent<SnakeTail>());
-        tail.GetComponent<SnakeTail>().speed = speed;
-        NetworkServer.Spawn(tail);
+        tailObj.transform.position = head.GetNewEndTailLocation(tailObj.GetComponent<SnakeTail>());
+        tailObj.GetComponent<SnakeTail>().speed = speed;
+        
+        SnakeTail tail = tailObj.GetComponent<SnakeTail>();
+        tail.SetMatchId(networkMatchChecker.matchId);
+        tail.playerIndex = playerIndex;
+        
+        NetworkServer.Spawn(tailObj);
+        
+        ClientSetSpawnedTailToEnd(playerIndex);
 
-        ClientSetSpawnedTailToEnd(tail.GetComponent<SnakeTail>().id);
         pendingTailCount = count - 1;
     }
 
     [ClientRpc]
-    public void ClientSetSpawnedTailToEnd(int id)
+    public void ClientSetSpawnedTailToEnd(int _playerIndex)
     {
-        head.ClientSetSpawnedTailToEnd(id);
+        head.ClientSetSpawnedTailToEnd(_playerIndex);
     }
 
     [ClientRpc]

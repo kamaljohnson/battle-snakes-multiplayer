@@ -1,13 +1,15 @@
 ﻿using Mirror;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class SnakeTail : NetworkBehaviour
 {
-    public int id;
-    private static int recursiveLastId = 0;
+    [SyncVar] public int playerIndex;
 
+    public bool isAttached;     //Only used at the client side
+    
     [SyncVar] public int speed;
 
     public static List<SnakeTail> allTails = new List<SnakeTail>();
@@ -25,17 +27,25 @@ public class SnakeTail : NetworkBehaviour
 
     public Direction movementDirection;
 
+    NetworkMatchChecker networkMatchChecker;
+
     private void Awake()
     {
-        recursiveLastId++;
-        id = recursiveLastId;
+        networkMatchChecker = GetComponent<NetworkMatchChecker>();
 
         if (!isServer) allTails.Add(this);
 
         if (isHead)
         {
             snake = GetComponent<Snake>();
+            isAttached = true;
         }
+    }
+
+    [Server]
+    public void SetMatchId(Guid _matchId)
+    {
+        networkMatchChecker.matchId = _matchId;
     }
 
     void Update()
@@ -136,14 +146,16 @@ public class SnakeTail : NetworkBehaviour
     }
 
     [Client]
-    public void ClientSetSpawnedTailToEnd(int id)
+    public void ClientSetSpawnedTailToEnd(int _playerIndex)
     {
         if(nextTail != null)
         {
-            nextTail.ClientSetSpawnedTailToEnd(id);
+            nextTail.ClientSetSpawnedTailToEnd(_playerIndex);
         } else
         {
-            nextTail = allTails.Find(x => x.id == id);
+            Debug.Log("SNAKE SIZE: " + allTails.Count);
+            nextTail = allTails.Find(x => (x.playerIndex == _playerIndex) && !x.isAttached);
+            nextTail.isAttached = true;
         }
     }
 
