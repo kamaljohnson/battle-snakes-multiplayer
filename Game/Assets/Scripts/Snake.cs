@@ -11,8 +11,8 @@ public class Snake : NetworkBehaviour
 
     public int speed;
 
-    public Direction movementDirection;
-    public Direction nextDirection;
+    public DirectionHelper.Directions movementDirection;
+    public DirectionHelper.Directions nextDirection;
 
     public int pendingTailCount;
 
@@ -30,7 +30,7 @@ public class Snake : NetworkBehaviour
     }
 
     [Server]
-    public void InitMovement(Direction direction)
+    public void InitMovement(DirectionHelper.Directions direction)
     {
         head.speed = speed;
         head.InitMovement(direction);
@@ -47,7 +47,7 @@ public class Snake : NetworkBehaviour
     }
 
     [Server]
-    public void ChangeNextDirection(Direction direction)
+    public void ChangeNextDirection(DirectionHelper.Directions direction)
     {
         nextDirection = direction;
     }
@@ -89,14 +89,14 @@ public class Snake : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void ClientChangeHeadDirection(Direction direction)
+    public void ClientChangeHeadDirection(DirectionHelper.Directions direction)
     {
         movementDirection = direction;
         head.ChangeDirection(movementDirection);
     }
 
     [ClientRpc]
-    public void ClientInitMovement(Direction direction)
+    public void ClientInitMovement(DirectionHelper.Directions direction)
     {
         head.InitMovement(direction);
     }
