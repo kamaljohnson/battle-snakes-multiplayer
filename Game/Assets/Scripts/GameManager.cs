@@ -10,8 +10,10 @@ public class GameManager : NetworkBehaviour
     public List<Player> players = new List<Player>();
 
     public GameObject gameBoardPrefab;
+    public GameObject foodManagerPrefab;
 
     GameBoard gameBoard;
+    FoodManager foodManager;
     NetworkMatchChecker networkMatchChecker;
 
     // Start is called before the first frame updatesss
@@ -21,20 +23,34 @@ public class GameManager : NetworkBehaviour
         instance = this;
     }
 
-    public void SetMatchId(Guid _matchId)
+    public void Init(Guid _matchId)
     {
         networkMatchChecker.matchId = _matchId;
+
+        InitGameBoard();
+        InitFoodManager();
     }
 
-    public void InitGameBoard(Guid matchId)
+    public void InitGameBoard()
     {
         GameObject gameBoardObj = Instantiate(gameBoardPrefab);
 
         gameBoard = gameBoardObj.GetComponent<GameBoard>();
-        gameBoard.SetMatchId(matchId);
+        gameBoard.SetMatchId(networkMatchChecker.matchId);
 
         NetworkServer.Spawn(gameBoardObj);
-        
+    }
+
+    public void InitFoodManager()
+    {
+        GameObject foodManagerObj = Instantiate(foodManagerPrefab);
+
+        foodManager = foodManagerObj.GetComponent<FoodManager>();
+        foodManager.SetMatchId(networkMatchChecker.matchId);
+
+        NetworkServer.Spawn(foodManagerObj);
+
+        foodManager.SpawnFood(3);
     }
 
     public void AddPlayer(Player _player)

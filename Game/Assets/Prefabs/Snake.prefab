@@ -69,7 +69,8 @@ MonoBehaviour:
   head: {fileID: 3470585035712066543}
   playerIndex: 0
   tailPrefab: {fileID: 8306813868397453032, guid: 136c7c58533e06d48b1f6ba4400daf03, type: 3}
-  speed: 3
+  speed: 20
+  initialSize: 10
   movementDirection: 0
   nextDirection: 0
   pendingTailCount: 0

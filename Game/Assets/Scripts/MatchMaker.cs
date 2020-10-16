@@ -137,9 +137,8 @@ public class MatchMaker : NetworkBehaviour
     {
         GameObject gameManagerObj = Instantiate(gameManagerPrefab);
         GameManager gameManager = gameManagerObj.GetComponent<GameManager>();
-        
-        gameManager.SetMatchId(_matchID.ToGuid());
-        gameManager.InitGameBoard(_matchID.ToGuid());
+
+        gameManager.Init(_matchID.ToGuid());
 
         NetworkServer.Spawn(gameManagerObj);
 

@@ -11,6 +11,8 @@ public class Snake : NetworkBehaviour
 
     public int speed;
 
+    public int initialSize;
+
     public DirectionHelper.Directions movementDirection;
     public DirectionHelper.Directions nextDirection;
 
@@ -80,6 +82,12 @@ public class Snake : NetworkBehaviour
         ClientSetSpawnedTailToEnd(playerIndex);
 
         pendingTailCount = count - 1;
+    }
+
+    [Server]
+    public void SpawnInitTail()
+    {
+        SpawnTail(initialSize);
     }
 
     [ClientRpc]

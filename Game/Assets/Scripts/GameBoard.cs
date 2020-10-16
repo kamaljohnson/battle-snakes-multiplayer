@@ -11,9 +11,13 @@ public class GameBoard : NetworkBehaviour
     public List<Snake> snakes = new List<Snake>();
 
     public Vector2 boardSize;
+    public float spawnHeightOffset;
+
+    public static GameBoard instance;
 
     public void Awake()
     {
+        instance = this;
         networkMatchChecker = GetComponent<NetworkMatchChecker>();
     }
 
@@ -39,16 +43,17 @@ public class GameBoard : NetworkBehaviour
     public void SpawnSnake(Player _player)
     {
         Debug.Log("Spawning snake from game board " + GameManager.instance.players);
-        Tuple<int, int> loc = GetFreeSpawnLocation();
+        Vector3 loc = GetFreeSpawnLocation();
 
         snakes.Add(_player.SpawnSnake(loc, DirectionHelper.Directions.Forward));
     }
 
     [Server]
-    public Tuple<int, int> GetFreeSpawnLocation()
+    public Vector3 GetFreeSpawnLocation()
     {
         //TODO: change the random function to the actual get location
-        return new Tuple<int, int>(UnityEngine.Random.Range(-(int)boardSize.x, (int)boardSize.x - 1), 
+        return new Vector3(UnityEngine.Random.Range(-(int)boardSize.x, (int)boardSize.x - 1),
+            transform.position.y + spawnHeightOffset,
             UnityEngine.Random.Range(-(int)boardSize.y, (int)boardSize.y - 1));
     }
 }
