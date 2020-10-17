@@ -16,11 +16,4 @@ public class Food : NetworkBehaviour
     {
         networkMatchChecker.matchId = _matchId;
     }
-
-    [Server]
-    public void Eat()
-    {
-        FoodManager.instance.SpawnFood();
-        NetworkServer.Destroy(gameObject);
-    }
 }

@@ -58,12 +58,22 @@ public class SnakeTail : NetworkBehaviour
     void Update()
     {
         if (!isMoving) return;
+
         Move();
     }
 
     public void StartMoving()
     {
         isMoving = true;
+    }
+
+    public void StopMoving()
+    {
+        isMoving = false;
+        if(nextTail != null)
+        {
+            nextTail.StopMoving();
+        }
     }
 
     public void Move()
@@ -100,7 +110,6 @@ public class SnakeTail : NetworkBehaviour
 
     public void ChangeDirection(DirectionHelper.Directions direction)
     {
-
         if (!isServer) HandleFiller(direction);
 
         if (!isMoving)
@@ -157,6 +166,21 @@ public class SnakeTail : NetworkBehaviour
                 nextLoc += new Vector2(-1, 0);
                 break;
         }
+        
+        if (isHead && isServer)
+        {
+            CheckHitWall();
+        }
+    }
+
+    [Server]
+    public void CheckHitWall()
+    {
+        if(Mathf.Abs(nextLoc.x) > GameBoard.instance.boardSize.x ||
+           Mathf.Abs(nextLoc.y) > GameBoard.instance.boardSize.y)
+        {
+            snake.HitWall();
+        }
     }
 
     [Server]
@@ -180,7 +204,6 @@ public class SnakeTail : NetworkBehaviour
             nextTail.ClientSetSpawnedTailToEnd(_playerIndex);
         } else
         {
-            Debug.Log("SNAKE SIZE: " + allTails.Count);
             nextTail = allTails.Find(x => (x.playerIndex == _playerIndex) && !x.isAttached);
             nextTail.isAttached = true;
 

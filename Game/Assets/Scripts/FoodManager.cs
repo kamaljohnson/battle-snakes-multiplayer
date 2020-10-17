@@ -1,5 +1,6 @@
 ﻿using Mirror;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FoodManager : NetworkBehaviour
@@ -13,13 +14,12 @@ public class FoodManager : NetworkBehaviour
     public void Awake()
     {
         networkMatchChecker = GetComponent<NetworkMatchChecker>();
-
-        if (isServer) instance = this;
     }
 
     [Server]
     public void SetMatchId(Guid _matchId)
     {
+        instance = this;
         networkMatchChecker.matchId = _matchId;
     }
 
@@ -30,11 +30,16 @@ public class FoodManager : NetworkBehaviour
         _newFood.GetComponent<Food>().SetMatchId(networkMatchChecker.matchId);
 
         NetworkServer.Spawn(_newFood);
-        quantity--;
 
-        if(quantity > 0)
+        if(quantity > 1)
         {
             SpawnFood(quantity - 1);
         }
+    }
+
+    [Server]
+    public void RemoveFood(GameObject food)
+    {
+        NetworkServer.UnSpawn(food);
     }
 }

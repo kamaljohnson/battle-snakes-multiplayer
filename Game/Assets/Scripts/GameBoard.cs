@@ -17,7 +17,6 @@ public class GameBoard : NetworkBehaviour
 
     public void Awake()
     {
-        instance = this;
         networkMatchChecker = GetComponent<NetworkMatchChecker>();
     }
 
@@ -25,6 +24,7 @@ public class GameBoard : NetworkBehaviour
     public void SetMatchId(Guid _matchId)
     {
         networkMatchChecker.matchId = _matchId;
+        instance = this;
     }
 
     [Server]

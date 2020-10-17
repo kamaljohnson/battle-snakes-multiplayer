@@ -18,11 +18,14 @@ public class Snake : NetworkBehaviour
 
     public int pendingTailCount;
 
+    public Health health;
+
     NetworkMatchChecker networkMatchChecker;
 
     public void Awake()
     {
         networkMatchChecker = GetComponent<NetworkMatchChecker>();
+        health = GetComponent<Health>();
     }
 
     [Server]
@@ -90,6 +93,37 @@ public class Snake : NetworkBehaviour
         SpawnTail(initialSize);
     }
 
+    public void OnTriggerEnter(Collider other)
+    {
+        // if (!isServer) return;
+
+        switch (other.tag)
+        {
+            case "Food":
+                Eat(other.gameObject);
+                break;
+        }
+    }
+
+    [Server]
+    public void Eat(GameObject food)
+    {
+        SpawnTail();
+        FoodManager.instance.RemoveFood(food);
+        FoodManager.instance.SpawnFood();
+    }
+
+    [Server]
+    public void HitWall()
+    {
+        Debug.Log("HIT WALL");
+        health.GetHit();
+        if (health.isDead)
+        {
+            head.StopMoving();
+        }
+    }
+
     [ClientRpc]
     public void ClientSetSpawnedTailToEnd(int _playerIndex)
     {
@@ -114,5 +148,4 @@ public class Snake : NetworkBehaviour
     {
         head.StartMoving();
     }
-
 }
