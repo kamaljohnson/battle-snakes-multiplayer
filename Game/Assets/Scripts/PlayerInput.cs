@@ -35,21 +35,27 @@ public static class DirectionHelper
 public class PlayerInput : NetworkBehaviour
 {
     public bool isLocal = false;
-    public InputAction wasd;
+    public PlayerAction playerAction;
+
     public DirectionHelper.Directions inputDirection;
     private DirectionHelper.Directions tempInputDirection;
     public bool directionChange;
 
     public int playerIndex;
 
+    public void Awake()
+    {
+        playerAction = new PlayerAction();
+    }
+
     void OnEnable()
     {
-        wasd.Enable();
+        playerAction.Enable();
     }
 
     void OnDisable()
     {
-        wasd.Disable();
+        playerAction.Disable();
     }
 
     public void Start()
@@ -74,7 +80,7 @@ public class PlayerInput : NetworkBehaviour
 
     void HandleMovementInput()
     {
-        Vector2 input = wasd.ReadValue<Vector2>();
+        Vector2 input = playerAction.Main.Move.ReadValue<Vector2>();
 
         if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
         {
