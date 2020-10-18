@@ -111,11 +111,12 @@ public class SnakeTail : NetworkBehaviour
     public void ChangeDirection(DirectionHelper.Directions direction)
     {
         if (!isServer) HandleFiller(direction);
-
+        
         if (!isMoving)
         {
             InitMovement(direction);
             StartMoving();
+
             return;
         } //If the tail is newly created then start moving
 
