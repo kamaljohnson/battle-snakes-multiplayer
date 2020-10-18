@@ -38,8 +38,8 @@ public class FoodManager : NetworkBehaviour
     }
 
     [Server]
-    public void RemoveFood(GameObject food)
+    public void EatFood(GameObject food)
     {
-        NetworkServer.UnSpawn(food);
+        food.GetComponent<Food>().GetEaten();
     }
 }

@@ -101,12 +101,18 @@ public class Snake : NetworkBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        // if (!isServer) return;
+        if (!isServer) return;
 
         switch (other.tag)
         {
             case "Food":
                 Eat(other.gameObject);
+                break;
+            case "Snake":
+                if (other.GetComponent<SnakeTail>().isMoving)
+                {
+                    HitWall();
+                }
                 break;
         }
     }
@@ -114,15 +120,14 @@ public class Snake : NetworkBehaviour
     [Server]
     public void Eat(GameObject food)
     {
-        SpawnTail();
-        FoodManager.instance.RemoveFood(food);
+        FoodManager.instance.EatFood(food);
         FoodManager.instance.SpawnFood();
+        SpawnTail();
     }
 
     [Server]
     public void HitWall()
     {
-        Debug.Log("HIT WALL");
         health.GetHit();
         if (health.isDead)
         {

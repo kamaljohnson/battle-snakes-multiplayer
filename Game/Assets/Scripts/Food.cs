@@ -16,4 +16,10 @@ public class Food : NetworkBehaviour
     {
         networkMatchChecker.matchId = _matchId;
     }
+
+    [Server]
+    public void GetEaten()
+    {
+        Destroy(gameObject);
+    }
 }
