@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 4501878269936757973}
   - component: {fileID: 5066054997716675481}
   - component: {fileID: 65922214347937816}
+  - component: {fileID: 7265244088979993091}
+  - component: {fileID: 1481240537544790591}
   m_Layer: 0
   m_Name: Snake
   m_TagString: Untagged
@@ -69,10 +71,12 @@ MonoBehaviour:
   head: {fileID: 3470585035712066543}
   playerIndex: 0
   tailPrefab: {fileID: 8306813868397453032, guid: 136c7c58533e06d48b1f6ba4400daf03, type: 3}
-  speed: 3
+  speed: 5
+  initialSize: 10
   movementDirection: 0
   nextDirection: 0
   pendingTailCount: 0
+  health: {fileID: 0}
 --- !u!114 &3470585035712066543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,3 +165,32 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   currentMatchDebug: 
+--- !u!65 &7265244088979993091
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4572321378941926390}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1481240537544790591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4572321378941926390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f28a7151bf7f3ef4585c819224bf9b5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0
+  health: 1
+  isDead: 0

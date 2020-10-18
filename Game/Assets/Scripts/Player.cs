@@ -230,11 +230,11 @@ public class Player : NetworkBehaviour
 
     // Game
     [Server]
-    public Snake SpawnSnake(Tuple<int, int> loc, DirectionHelper.Directions movementDirection)
+    public Snake SpawnSnake(Vector3 loc, DirectionHelper.Directions movementDirection)
     {
         Debug.Log("SPAWN SNAKE : PLAYER INDEX : " + playerIndex + " MATCH ID: " + networkMatchChecker.matchId);
         GameObject localSnakeObj = Instantiate(snakePrefab);
-        localSnakeObj.transform.position = new Vector3(loc.Item1, localSnakeObj.transform.position.y, loc.Item2);
+        localSnakeObj.transform.position = loc;
         
         localSnake = localSnakeObj.GetComponent<Snake>();
         localSnake.SetMatchId(networkMatchChecker.matchId);
@@ -245,11 +245,10 @@ public class Player : NetworkBehaviour
         
         TargetAddInputHandler();
 
-
         localSnake.InitMovement(movementDirection);
         localSnake.StartMoving();
 
-        localSnake.SpawnTail(20);
+        localSnake.SpawnInitTail();
 
         return localSnake;
     }

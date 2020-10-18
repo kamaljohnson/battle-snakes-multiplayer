@@ -64,7 +64,9 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   players: []
+  snakes: []
   boardSize: {x: 20, y: 10}
+  spawnHeightOffset: 1.5
 --- !u!114 &1583877589559309480
 MonoBehaviour:
   m_ObjectHideFlags: 0

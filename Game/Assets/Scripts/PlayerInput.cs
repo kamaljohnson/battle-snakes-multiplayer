@@ -1,8 +1,4 @@
 ﻿using Mirror;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Mime;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
