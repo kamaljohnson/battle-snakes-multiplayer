@@ -50,7 +50,7 @@ public class GameManager : NetworkBehaviour
 
         NetworkServer.Spawn(foodManagerObj);
 
-        foodManager.SpawnFood(3);
+        foodManager.SpawnFood(50);
     }
 
     public void AddPlayer(Player _player)

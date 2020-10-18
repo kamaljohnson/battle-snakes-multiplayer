@@ -65,12 +65,18 @@ public class Snake : NetworkBehaviour
 
         ClientChangeHeadDirection(movementDirection);
         
-        if (pendingTailCount > 0) SpawnTail(pendingTailCount);
+        if (pendingTailCount > 0) SpawnTail(pendingTailCount, false);
     }
 
     [Server]
-    public void SpawnTail(int count = 1)
+    public void SpawnTail(int count = 1, bool ext = true)
     {
+        if (ext)
+        {
+            pendingTailCount += count;
+            return;
+        }
+
         GameObject tailObj = Instantiate(tailPrefab);
 
         tailObj.transform.position = head.GetNewEndTailLocation(tailObj.GetComponent<SnakeTail>());
@@ -83,8 +89,8 @@ public class Snake : NetworkBehaviour
         NetworkServer.Spawn(tailObj);
         
         ClientSetSpawnedTailToEnd(playerIndex);
-
-        pendingTailCount = count - 1;
+        
+        pendingTailCount -= 1;
     }
 
     [Server]
