@@ -74,7 +74,7 @@ public class PlayerInput : NetworkBehaviour
         {
             directionChange = false;
             inputDirection = tempInputDirection;
-            SerndInputDirectionToServer(inputDirection);
+            SerndInputDirectionToServer(tempInputDirection);
         }
     }
 
@@ -97,43 +97,12 @@ public class PlayerInput : NetworkBehaviour
 
     void CheckDirectionChange()
     {
-        if (tempInputDirection == inputDirection)   
+        if (tempInputDirection == inputDirection)
         {
             directionChange = false;
             return;
         }
 
-        switch (tempInputDirection)
-        {
-            case DirectionHelper.Directions.Forward:
-                if(inputDirection == DirectionHelper.Directions.Back)
-                {
-                    directionChange = false;
-                    return;
-                }
-                break;
-            case DirectionHelper.Directions.Back:
-                if (inputDirection == DirectionHelper.Directions.Forward)
-                {
-                    directionChange = false;
-                    return;
-                }
-                break;
-            case DirectionHelper.Directions.Right:
-                if (inputDirection == DirectionHelper.Directions.Left)
-                {
-                    directionChange = false;
-                    return;
-                }
-                break;
-            case DirectionHelper.Directions.Left:
-                if (inputDirection == DirectionHelper.Directions.Right)
-                {
-                    directionChange = false;
-                    return;
-                }
-                break;
-        }
         directionChange = true;
     }
 

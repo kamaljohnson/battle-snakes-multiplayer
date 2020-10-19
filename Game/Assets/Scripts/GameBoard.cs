@@ -42,7 +42,6 @@ public class GameBoard : NetworkBehaviour
     [Server]
     public void SpawnSnake(Player _player)
     {
-        Debug.Log("Spawning snake from game board " + GameManager.instance.players);
         Vector3 loc = GetFreeSpawnLocation();
 
         snakes.Add(_player.SpawnSnake(loc, DirectionHelper.Directions.Forward));

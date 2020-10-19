@@ -54,6 +54,35 @@ public class Snake : NetworkBehaviour
     [Server]
     public void ChangeNextDirection(DirectionHelper.Directions direction)
     {
+        // check if the next direction can be in the provided direction
+        switch (direction)
+        {
+            case DirectionHelper.Directions.Forward:
+                if (movementDirection == DirectionHelper.Directions.Back)
+                {
+                    return;
+                }
+                break;
+            case DirectionHelper.Directions.Back:
+                if (movementDirection == DirectionHelper.Directions.Forward)
+                {
+                    return;
+                }
+                break;
+            case DirectionHelper.Directions.Right:
+                if (movementDirection == DirectionHelper.Directions.Left)
+                {
+                    return;
+                }
+                break;
+            case DirectionHelper.Directions.Left:
+                if (movementDirection == DirectionHelper.Directions.Right)
+                {
+                    return;
+                }
+                break;
+        }
+
         nextDirection = direction;
     }
 
@@ -61,6 +90,7 @@ public class Snake : NetworkBehaviour
     public void HeadReachedNextLoc()
     {
         movementDirection = nextDirection;
+        
         head.ChangeDirection(movementDirection);
 
         ClientChangeHeadDirection(movementDirection);
